@@ -6,12 +6,13 @@ const userProfileSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: true,
+      unique: true // pastikan 1 user hanya punya 1 profil
     },
 
     username: {
       type: String,
-      trim: true
+      trim: true,
     },
 
     image_url: {
@@ -26,7 +27,7 @@ const userProfileSchema = new mongoose.Schema(
 
     gender: {
       type: String,
-      enum: ['male', 'female', 'other', ''], // validasi enum
+      enum: ['male', 'female', 'other', ''],
       default: ''
     },
 
@@ -68,43 +69,6 @@ const userProfileSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 1000,
-      default: ''
-    },
-
-    // Social media links
-    linkedin_url: {
-      type: String,
-      trim: true,
-      default: ''
-    },
-
-    youtube_url: {
-      type: String,
-      trim: true,
-      default: ''
-    },
-
-    instagram_url: {
-      type: String,
-      trim: true,
-      default: ''
-    },
-
-    facebook_url: {
-      type: String,
-      trim: true,
-      default: ''
-    },
-
-    line_url: {
-      type: String,
-      trim: true,
-      default: ''
-    },
-
-    twitter_url: {
-      type: String,
-      trim: true,
       default: ''
     },
 

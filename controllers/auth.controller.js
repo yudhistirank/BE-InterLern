@@ -1,4 +1,6 @@
 const User = require('../models/user.model');
+const UserProfile = require('../models/userprofile.model');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -11,8 +13,16 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ nama, email, password: hashedPassword, role });
+
+    // Buat user profile setelah user berhasil dibuat
+    await UserProfile.create({
+      user: user._id,
+      username: nama
+    });
+
     res.status(201).json({ message: 'Registrasi sukses!' });
   } catch (err) {
+    console.error('Register error:', err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -28,7 +38,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Password salah!' });
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.json({ token, role: user.role });
+    res.json({ token, role: user.role, userId: user._id });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

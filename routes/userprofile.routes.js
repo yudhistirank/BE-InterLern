@@ -4,7 +4,7 @@ const { verifyToken } = require('../middlewares/auth.middleware');
 const userProfileController = require('../controllers/userprofile.controller');
 
 // Ambil profil user
-router.get('/', verifyToken, userProfileController.getProfile);
+router.get('/public/:userId', userProfileController.getPublicProfile);
 
 // Buat atau update profil user
 router.post('/', verifyToken, userProfileController.upsertProfile);

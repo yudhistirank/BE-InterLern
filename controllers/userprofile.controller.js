@@ -1,11 +1,12 @@
 const UserProfile = require('../models/userprofile.model');
 
 // [GET] Ambil profil user berdasarkan ID pengguna
-exports.getProfile = async (req, res) => {
+exports.getPublicProfile = async (req, res) => {
   try {
-    const profile = await UserProfile.findOne({ user: req.user.id }).populate('user', 'nama email role');
+    const { userId } = req.params;
+    const profile = await UserProfile.findOne({ user: userId }).populate('user', 'nama email role');
     if (!profile) return res.status(404).json({ message: 'Profil tidak ditemukan' });
-    res.json({ data: profile }); // sekarang ada field data.user.nama & data.user.email
+    res.json({ data: profile });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
